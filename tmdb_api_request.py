@@ -6,26 +6,32 @@ import flask
 from flask import current_app
 
 
+
+# def get_tmdb_api_key():
+#     return current_app.config['TMDB_API_KEY']    
+
+
 TMDB_API_BASE_URL = 'https://api.themoviedb.org/3'
 TMDB_IMAGE_BACKDROP_SIZE = 'original'
 TMDB_IMAGES_BASE_URL = 'https://image.tmdb.org/t/p/' + TMDB_IMAGE_BACKDROP_SIZE
-TMDB_API_KEY = current_app.config['TMDB_API_KEY']
+
+TMDB_API_KEY = 'get_tmdb_api_key()'
 
 TMDB_API_DISCOVER_MOVIES_ENDPOINT = 'discover/movie?'
 TMDB_API_DISCOVER_MOVIES_URL = '/'.join(
-    [TMDB_API_BASE_URL, TMDB_API_DISCOVER_MOVIES_ENDPOINT]) + f'api_key={TMDB_API_KEY}'
+    [TMDB_API_BASE_URL, TMDB_API_DISCOVER_MOVIES_ENDPOINT])
 
 TMDB_API_MOVIE_DETAIL_ENDPOINT = 'movie/{}?'
 TMDB_API_MOVIE_DETAIL_URL = '/'.join(
-    [TMDB_API_BASE_URL, TMDB_API_MOVIE_DETAIL_ENDPOINT]) + f'api_key={TMDB_API_KEY}'
+    [TMDB_API_BASE_URL, TMDB_API_MOVIE_DETAIL_ENDPOINT])
 
 TMDB_API_TV_DISCOVER_ENDPOINT = 'discover/tv?'
 TMDB_API_DISCOVER_TV_URL = '/'.join(
-    [TMDB_API_BASE_URL, TMDB_API_TV_DISCOVER_ENDPOINT]) + f'api_key={TMDB_API_KEY}'
+    [TMDB_API_BASE_URL, TMDB_API_TV_DISCOVER_ENDPOINT])
 
 TMDB_API_TV_DETAIL_ENDPOINT = 'tv/{}?'
 TMDB_API_TV_DETAIL_URL = '/'.join([TMDB_API_BASE_URL,
-                                  TMDB_API_TV_DETAIL_ENDPOINT]) + f'api_key={TMDB_API_KEY}'
+                                  TMDB_API_TV_DETAIL_ENDPOINT])
 
 TMDB_MOVIE_GENRES = {28: "Action", 12: "Adventure", 16: "Animation", 35: "Comedy", 80: "Crime", 99: "Documentary", 18: "Drama", 10751: "Family", 14: "Fantasy",
                      36: "History", 27: "Horror", 10402: "Music", 9648: "Mystery", 10749: "Romance", 878: "Science Fiction", 10770: "TV Movie", 53: "Thriller", 10752: "War", 37: "Western"}
@@ -55,9 +61,10 @@ async def fetch_tv(workout_length, page, without_genres, genres, watch_providers
 
 def get_discover_tv_query_url(workout_length, page, without_genres, genres, watch_providers, watch_region):
     if without_genres is None:
-        return f"{TMDB_API_DISCOVER_TV_URL}&with_genres={genres}&with_watch_providers={watch_providers}&with_runtime.gte={workout_length}&with_runtime.lte={int(workout_length) + 5}&with_watch_monetization_types=flatrate&watch_region={watch_region}&page={page}"
+        return f"{TMDB_API_DISCOVER_TV_URL}&with_genres={genres}&with_watch_providers={watch_providers}&with_runtime.gte={workout_length}&with_runtime.lte={int(workout_length) + 5}&with_watch_monetization_types=flatrate&watch_region={watch_region}&page={page}&api_key={current_app.config['TMDB_API_KEY']}"
     else:
-        return f"{TMDB_API_DISCOVER_TV_URL}&with_genres={genres}&without_genres={without_genres}&with_watch_providers={watch_providers}&with_runtime.gte={workout_length}&with_runtime.lte={int(workout_length) + 5}&with_watch_monetization_types=flatrate&watch_region={watch_region}&page={page}"
+        return f"{TMDB_API_DISCOVER_TV_URL}&with_genres={genres}&without_genres={without_genres}&with_watch_providers={watch_providers}&with_runtime.gte={workout_length}&with_runtime.lte={int(workout_length) + 5}&with_watch_monetization_types=flatrate&watch_region={watch_region}&page={page}&api_key={current_app.config['TMDB_API_KEY']}"
+
 
 
 async def fetch_single_tv_show(tv_show, session):
@@ -125,9 +132,9 @@ async def fetch_single_movie(movie, session):
 
 def get_discover_query_url(page, without_genres, genres, watch_providers, watch_region):
     if without_genres is None:
-        return f"{TMDB_API_DISCOVER_MOVIES_URL}&with_genres={genres}&with_watch_providers={watch_providers}&with_runtime.lte=210&with_runtime.gte=120&with_watch_monetization_types=flatrate&watch_region={watch_region}&page={page}&sort_by=vote_average.desc"
+        return f"{TMDB_API_DISCOVER_MOVIES_URL}&with_genres={genres}&with_watch_providers={watch_providers}&with_runtime.lte=210&with_runtime.gte=120&with_watch_monetization_types=flatrate&watch_region={watch_region}&page={page}&sort_by=vote_average.desc&api_key={current_app.config['TMDB_API_KEY']}"
     else:
-        return f"{TMDB_API_DISCOVER_MOVIES_URL}&with_genres={genres}&without_genres={without_genres}&with_watch_providers={watch_providers}&with_runtime.lte=210&with_runtime.gte=120&with_watch_monetization_types=flatrate&watch_region={watch_region}&page={page}&sort_by=vote_average.desc"
+        return f"{TMDB_API_DISCOVER_MOVIES_URL}&with_genres={genres}&without_genres={without_genres}&with_watch_providers={watch_providers}&with_runtime.lte=210&with_runtime.gte=120&with_watch_monetization_types=flatrate&watch_region={watch_region}&page={page}&sort_by=vote_average.desc&api_key={current_app.config['TMDB_API_KEY']}"
 
 
 async def fetch_movies_async(page, without_genres, genres, watch_providers, watch_region):

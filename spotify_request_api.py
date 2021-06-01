@@ -29,7 +29,6 @@ async def fetch_shows(podcast_ids, region, client_session):
         url = SPOTIFY_WEB_API_BASE_URL + SPOTIFY_SHOWS_END_POINT
         return await get_final_podcasts_response(url=url, region=region, podcast_ids=podcast_ids, client_session=client_session)
     except:
-        print('Here I am')
         traceback.print_exc()
         pass
     return []
@@ -49,7 +48,6 @@ async def get_spotify_access_token(client_session):
             session['SPOTIFY_ACCESS_TOKEN_EXPIRES_IN'] = token_json['expires_in']
             return token_json['access_token']
     except:
-        traceback.print_exc()
         pass
     return None
 
